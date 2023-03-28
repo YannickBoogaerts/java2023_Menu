@@ -12,4 +12,6 @@ public interface Menu {
     Map<String, String> getItemText();
 
     Item addItem(String key, Item item);
+
+    String getLibel();
 }

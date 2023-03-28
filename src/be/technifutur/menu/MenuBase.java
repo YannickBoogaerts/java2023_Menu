@@ -14,8 +14,7 @@ public class MenuBase extends Item implements Menu {
     public MenuBase(String libel, MenuVue vue) {
         super(libel);
         Objects.requireNonNull(vue);
-        System.out.println("Item.Item");
-        this.vue = vue;
+         this.vue = vue;
     }
 
     @Override

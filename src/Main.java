@@ -5,7 +5,7 @@ public class Main {
 
         //Menu menuPrincipal = getMenu();
         MenuBuilder menuBuilder = new MenuBuilder();
-        Menu menuPrincipal = getMenu();
+        Menu menuPrincipal = getMenu(menuBuilder);
 
         while ( ! menuPrincipal.isFinish()) {
             menuPrincipal.execute();
@@ -20,7 +20,7 @@ public class Main {
             menuBuilder.startMenu("b", "Menu Secondaire");
             {
                 menuBuilder.addItem("c", "Option2", getOption2());
-                Menu menu3 = menuBuilder.startMenu("d", "Menu 3", new VueInLine());
+                Menu menu3 = menuBuilder.startMenuLoop("d", "Menu 3", new VueInLine());
                 {
                     menuBuilder.addItem("e", "Option3", getOption3());
                     menuBuilder.addItem("q", "Quitter", () -> menu3.setFinish(true));
@@ -44,7 +44,9 @@ public class Main {
         ItemExecutable option5 = new ItemExecutable("Option 5", getOption5());
         ItemExecutable test = new ItemExecutable(
                 "Menu secondaire",
-                getLoopMenu(menuSecondaire));
+                ()->{
+                    menuSecondaire.setFinish(false);
+                    while(!menuSecondaire.isFinish()) menuSecondaire.execute();});
 
         menuSecondaire.addItem( "a", option3);
         menuSecondaire.addItem( "b", option4);
@@ -55,13 +57,6 @@ public class Main {
         menuPrincipal.addItem("k",option5);
         menuPrincipal.addItem("q",new ItemExecutable("quitter",()->menuPrincipal.setFinish(true)));
         return menuPrincipal;
-    }
-
-    private static Runnable getLoopMenu(MenuBase menuSecondaire) {
-        return () -> {
-            menuSecondaire.setFinish(false);
-            while (!menuSecondaire.isFinish()) menuSecondaire.execute();
-        };
     }
 
     private static Runnable getOption5() {
